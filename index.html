@@ -1,0 +1,217 @@
+<!--
+
+You will find my coding challenge completed.  It resembles a phoebook-esque operations and I know it doesn't follow the 'exact' requirements but I think it represents that I was able to work with something that I had no experience with and turnover something in a reasonable amount of time.  If this submission is unacceptable, please let me know, and I will try to make changes.  Also, the file will run in firefox and the avatar pictures may take a little bit longer to load (sometimes very fast sometimes very slow - dependent on picture source: http://lorempixel.com ?).
+
+Thanks,
+Tom
+-->
+
+<!doctype html>
+<html ng-app="PhonebookApp">
+<head>
+<body>
+	<meta charset="UTF-8">
+	<title>Angular Application</title>
+	<!--Scripts
+	******************************************************************************
+	***************************************************************************-->
+	<script src="lib/Angular/angular.min.js" type="text/javascript" ></script>
+	<script src="js/controllers.js" type="text/javascript" ></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.11/angular.min.js"></script>
+	<!--**************************************************************************
+	***************************************************************************-->
+
+
+<div class="main" ng-controller="PhonebookFunction">
+<h1>Create Contact</h1>
+<h4>Contact Added to Bottom of List</h4>
+	<!--Form for New Contact
+	******************************************************************************
+	***************************************************************************-->
+<form class="form-horizontal" role="form" ng-submit="addRow()">
+<!--Avatar field-->	
+	<div class="form-group">
+		<label class="col-md-2 control-label">Avatar</label>
+		<div class="col-md-4">
+			<input type="text" class="form-control" name="avatar"
+				ng-model="avatar" />
+		</div>
+	</div>
+<!--Name field-->
+	<div class="form-group">
+		<label class="col-md-2 control-label">Name</label>
+		<div class="col-md-4">
+			<input type="text" class="form-control" name="name"
+				ng-model="name" />
+		</div>
+	</div>
+<!--ID field-->
+	<div class="form-group">
+		<label class="col-md-2 control-label">ID</label>
+		<div class="col-md-4">
+			<input type="text" class="form-control" name="id"
+				ng-model="id" />
+		</div>
+	</div>
+<!--Phone Number field-->
+	<div class="form-group">
+		<label class="col-md-2 control-label">Phone Number</label>
+		<div class="col-md-4">
+			<input type="text" class="form-control" name="phone"
+				ng-model="phone" />
+		</div>
+	</div>
+<!--Email field-->
+	<div class="form-group">
+		<label class="col-md-2 control-label">Email</label>
+		<div class="col-md-4">
+			<input type="text" class="form-control" name="email"
+				ng-model="email" />
+		</div>
+	</div>
+<!--Birthday field-->
+	<div class="form-group">
+		<label class="col-md-2 control-label">Birthday</label>
+		<div class="col-md-4">
+			<input type="text" class="form-control" name="birthday"
+				ng-model="birthday" />
+		</div>
+	</div>
+
+
+
+	<div class="form-group">								
+		<div style="padding-left:110px">
+			<input type="submit" value="Add New Contact: #{{counter}}" class="btn btn-primary"/>
+		</div>
+	</div>
+</form>
+
+	<!--**************************************************************************
+	***************************************************************************-->
+
+
+	
+	<!--Table read from JSON file
+	******************************************************************************
+	***************************************************************************-->
+
+	<table border = "3">
+
+		<thread>
+		<tr>
+			<th style="min-width: 100px;"> Avatar </th>
+			<th style="min-width: 100px;"> Name </th>
+			<th style="min-width: 100px;"> ID </th>
+			<th style="min-width: 100px;"> Phone Number</th>
+			<th style="min-width: 100px;"> Email </th>
+			<th style="min-width: 100px;"> Birthday </th>
+			<th style="min-width: 100px;"> Preview </th>
+			<th style="min-width: 100px;"> Edit </th>
+		</tr>
+		</thread>
+
+		<!-- May take a few seconds for avatar picture to load.  Also, need to view in Firefox-->
+		<tr ng-repeat= "item in PhonebookVariable">
+
+			<td> 
+				<img ng-src="{{item.avatar}}"/> 
+			</td>
+			<td> 
+				<span data-ng-hide="editMode">{{item.name}}</span>
+				<input type="text" data-ng-show="editMode" data-ng-model="item.name" data-ng-required />
+			</td>
+			<td> 
+				<span data-ng-hide="editMode">{{item.id}}</span> 
+				<input type="text" data-ng-show="editMode" data-ng-model="item.id" data-ng-required />
+			</td>
+			<td> 
+				<span data-ng-hide="editMode">{{item.phone}}</span> 
+				<input type="text" data-ng-show="editMode" data-ng-model="item.phone" data-ng-required />
+			</td>
+			<td> 
+				<span data-ng-hide="editMode">{{item.email}}</span> 
+				<input type="text" data-ng-show="editMode" data-ng-model="item.email" data-ng-required />
+			</td>
+			<td> 
+				<span data-ng-hide="editMode">{{item.birthday}}</span>
+				<input type="text" data-ng-show="editMode" data-ng-model="item.birthday" data-ng-required />
+			</td> 
+			
+			<td> <!--View button to see contact.  No avatar-->
+				<button id = "btn1" ng-click="doView(
+					'Name: ' + item.name + 
+					' ID: ' + item.id +
+					' Phone Number: ' + item.phone +
+					' Email: ' + item.email +
+					' Birthday: ' + item.birthday
+					)" 
+				>View</button>
+			</td>
+			
+			<td>
+			            <button type="submit" data-ng-hide="editMode" data-ng-click="editMode = true; editAppKey(entry)" class="btn btn-default">Edit</button>
+			            <button type="submit" data-ng-show="editMode" data-ng-click="editMode = false" class="btn btn-default">Save</button>
+			            <!--<button type="submit" data-ng-show="editMode" data-ng-click="editMode = false; cancel()" class="btn btn-default">Cancel</button>-->
+		       </td> 
+		</tr>
+
+		<!--Part of table to accomodate for adding new user-->
+		<tr ng-repeat="newRow in rows track by $index"> <!--'track by $index' gets rid of dedupe errors-->
+				
+					<td>
+						<span data-ng-hide="editMode">{{newRow.avatar}}</span>
+						<input type="text" data-ng-show="editMode" data-ng-model="newRow.avatar" data-ng-required />
+						</td>
+					<td> 
+						<span data-ng-hide="editMode">{{newRow.name}}</span>
+						<input type="text" data-ng-show="editMode" data-ng-model="newRow.name" data-ng-required />
+					</td>
+					<td> 
+						<span data-ng-hide="editMode">{{newRow.id}}</span> 
+						<input type="text" data-ng-show="editMode" data-ng-model="newRow.id" data-ng-required />
+					</td>
+					<td> 
+						<span data-ng-hide="editMode">{{newRow.phone}}</span> 
+						<input type="text" data-ng-show="editMode" data-ng-model="newRow.phone" data-ng-required />
+					</td>
+					<td> 
+						<span data-ng-hide="editMode">{{newRow.email}}</span> 
+						<input type="text" data-ng-show="editMode" data-ng-model="newRow.email" data-ng-required />
+					</td>
+					<td> 
+						<span data-ng-hide="editMode">{{newRow.birthday}}</span>
+						<input type="text" data-ng-show="editMode" data-ng-model="newRow.birthday" data-ng-required />
+					</td> 
+					<td> <!--View button to see contact.  No avatar-->
+						
+						<button id = "btn1" ng-click="doView(
+						'Name: ' + newRow.name + 
+						' ID: ' + newRow.id +
+						' Phone Number: ' + newRow.phone +
+						' Email: ' + newRow.email +
+						' Birthday: ' + newRow.birthday
+						)" 
+						>View</button>
+					</td>
+						
+					<!--	<td><button id = "btn2" ng-click="doView(view)" >Edit</button></td>-->
+		            <td>
+			            <button type="submit" data-ng-hide="editMode" data-ng-click="editMode = true; editAppKey(entry)" class="btn btn-default">Edit</button>
+			            <button type="submit" data-ng-show="editMode" data-ng-click="editMode = false" class="btn btn-default">Save</button>
+			            <!--<button type="submit" data-ng-show="editMode" data-ng-click="editMode = false; cancel()" class="btn btn-default">Cancel</button>-->
+		        	</td> 
+
+						
+				</tr>
+
+	</table>	
+
+</div>
+	<!--**************************************************************************
+	***************************************************************************-->
+
+
+</body>
+</html>
